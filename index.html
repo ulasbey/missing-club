@@ -22,11 +22,16 @@
     <style>
       /* Prevent tap highlight and ensure smooth touch */
       * { -webkit-tap-highlight-color: transparent; }
-      html { touch-action: manipulation; }
+      html { 
+        touch-action: manipulation; 
+        color-scheme: dark;
+        background-color: #020617;
+      }
       /* Match app background to prevent white flash on load */
       html, body, #root {
         background: radial-gradient(ellipse at top left, #020617 0%, #0f172a 50%, #020617 100%);
         min-height: 100dvh;
+        background-color: #020617;
       }
     </style>
   </head>
