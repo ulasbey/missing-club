@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Missing Club - Football Trivia</title>
+    <meta name="description" content="Guess the missing club from a player's transfer history." />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Missing Club - Football Trivia" />
+    <meta property="og:description" content="Guess the missing club from a player's transfer history." />
+    <meta property="og:image" content="https://football-quiz-seven.vercel.app/og.svg" />
+    <meta property="og:url" content="https://football-quiz-seven.vercel.app" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Missing Club" />
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Missing Club - Football Trivia" />
+    <meta name="twitter:description" content="Guess the missing club from a player's transfer history." />
+    <meta name="twitter:image" content="https://football-quiz-seven.vercel.app/og.svg" />
+    <style>
+      /* Prevent tap highlight and ensure smooth touch */
+      * { -webkit-tap-highlight-color: transparent; }
+      html { touch-action: manipulation; }
+      /* Match app background to prevent white flash on load */
+      html, body, #root {
+        background: radial-gradient(ellipse at top left, #020617 0%, #0f172a 50%, #020617 100%);
+        min-height: 100dvh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
