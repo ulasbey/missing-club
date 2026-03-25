@@ -76,6 +76,18 @@
     }
 }
 
+@keyframes holographic {
+    0% { background-position: 0% 50%; opacity: 0.1; }
+    50% { background-position: 100% 50%; opacity: 0.3; }
+    100% { background-position: 0% 50%; opacity: 0.1; }
+}
+
+@keyframes pulseNext {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
 .animate-fade-in-up {
     animation: fadeInUp 0.5s ease-out both;
 }
@@ -103,6 +115,44 @@
 
 .animate-pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.panini-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.panini-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        125deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.05) 30%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 70%,
+        transparent 100%
+    );
+    background-size: 200% 200%;
+    animation: holographic 4s ease infinite;
+    pointer-events: none;
+}
+
+.panini-gold {
+    border: 2px solid #fbbf24;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+.panini-silver {
+    border: 2px solid #94a3b8;
+    box-shadow: 0 0 20px rgba(148, 163, 184, 0.2);
+}
+
+.animate-pulse-next {
+    animation: pulseNext 2s infinite;
 }
 
 /* Glitch effect for Legend mode danger zone */

@@ -196,7 +196,13 @@ export default function MultipleChoice({ options, correctAnswer, correctLogo, on
                             It was <span className="text-white font-bold">{correctAnswer}</span>
                         </p>
                     </div>
-                    <p className="text-slate-600 text-xs text-center mt-1">Tap to continue →</p>
+                    <button 
+                        onClick={handleSkip}
+                        className="w-full mt-4 py-4 bg-emerald-500 text-white font-black text-lg rounded-2xl shadow-xl shadow-emerald-500/20 active:scale-95 transition-all animate-pulse-next cursor-pointer"
+                    >
+                        NEXT QUESTION ➔
+                    </button>
+                    <p className="text-slate-600 text-[10px] uppercase font-bold tracking-widest mt-2 opacity-50">Or tap the card to skip</p>
                 </div>
             )}
 
@@ -210,7 +216,13 @@ export default function MultipleChoice({ options, correctAnswer, correctLogo, on
                             {correctAnswer}
                         </p>
                     </div>
-                    <p className="text-slate-600 text-xs text-center mt-1">Tap to continue →</p>
+                    <button 
+                        onClick={handleSkip}
+                        className="w-full mt-4 py-4 bg-emerald-500 text-white font-black text-lg rounded-2xl shadow-xl shadow-emerald-500/20 active:scale-95 transition-all animate-pulse-next cursor-pointer"
+                    >
+                        NEXT QUESTION ➔
+                    </button>
+                    <p className="text-slate-600 text-[10px] uppercase font-bold tracking-widest mt-2 opacity-50">Or tap the card to skip</p>
                 </div>
             )}
 
@@ -224,7 +236,13 @@ export default function MultipleChoice({ options, correctAnswer, correctLogo, on
                             It was <span className="text-white font-bold block text-xl">{correctAnswer}</span>
                         </p>
                     </div>
-                    <p className="text-slate-600 text-xs text-center mt-1">Tap to continue →</p>
+                    <button 
+                        onClick={handleSkip}
+                        className="w-full mt-4 py-4 bg-emerald-500 text-white font-black text-lg rounded-2xl shadow-xl shadow-emerald-500/20 active:scale-95 transition-all animate-pulse-next cursor-pointer"
+                    >
+                        NEXT QUESTION ➔
+                    </button>
+                    <p className="text-slate-600 text-[10px] uppercase font-bold tracking-widest mt-2 opacity-50">Or tap the card to skip</p>
                 </div>
             )}
         </div>
