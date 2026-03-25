@@ -261,77 +261,75 @@ function App() {
   }, [])
 
   const handleAnswer = useCallback((isCorrect, timeLeft = 0) => {
-    const timerDuration = config?.timer || 0
-    const newStreak = isCorrect ? streak + 1 : 0
+    try {
+      const timerDuration = config?.timer || 0
+      const currentStreak = streak // capture from closure
+      const nextStreak = isCorrect ? currentStreak + 1 : 0
+      
+      // 1. Calculate points
+      const { points, breakdown } = calcPoints({
+        isCorrect,
+        timeLeft,
+        timerDuration,
+        difficulty,
+        playerDifficulty: currentPlayer?.difficulty,
+        streak: nextStreak,
+      })
 
-    if (isCorrect) {
-      playCorrect()
-      if (newStreak >= 3) {
-        setShowStreakPopup(true)
-        setTimeout(() => setShowStreakPopup(false), 1200)
-      }
-    } else {
-      playWrong()
-    }
+      // 2. State updates (Batchable)
+      setScore(s => s + points)
+      setLastPoints(isCorrect ? { points, breakdown } : null)
+      setStreak(nextStreak)
 
-    const { points, breakdown } = calcPoints({
-      isCorrect,
-      timeLeft,
-      timerDuration,
-      difficulty,
-      playerDifficulty: currentPlayer?.difficulty,
-      streak: newStreak,
-    })
-
-    const newScore = score + points
-    const newCorrect = isCorrect ? correctCount + 1 : correctCount
-
-    setScore(newScore)
-    setCorrectCount(newCorrect)
-    setStreak(newStreak)
-    setLastPoints(isCorrect ? { points, breakdown } : null)
-
-    // Handle Pundit lives
-    if (!isCorrect && livesLeft !== null) {
-      const newLives = livesLeft - 1
-      setLivesLeft(newLives)
-      if (newLives === 0) {
-        setLegendGameOver(true)
-        if (difficulty !== 'Casual') {
-          const board = saveGameScore(newScore, difficulty, newCorrect, currentIndex + 1)
-          setPersonalBest(board[0]?.score || newScore)
-          recordGame({ difficulty, correctCount: newCorrect, totalQuestions: currentIndex + 1, score: newScore })
+      if (isCorrect) {
+        setCorrectCount(c => c + 1)
+        if (nextStreak >= 3) {
+          setShowStreakPopup(true)
+          setTimeout(() => setShowStreakPopup(false), 1200)
         }
-        playGameOver()
-        setGamePhase('finished')
-        return
+      } else {
+        // Handle Wrong Answer
+        if (livesLeft !== null) {
+          const updatedLives = livesLeft - 1
+          setLivesLeft(updatedLives)
+          if (updatedLives === 0) {
+            handleEndGame(score + points, correctCount, currentIndex)
+            return
+          }
+        }
+        if (config?.gameOverOnWrong) {
+          handleEndGame(score + points, correctCount, currentIndex)
+          return
+        }
       }
-    }
 
-    if (!isCorrect && config?.gameOverOnWrong) {
-      setLegendGameOver(true)
-      if (difficulty !== 'Casual') {
-        const board = saveGameScore(newScore, difficulty, newCorrect, currentIndex + 1)
-        setPersonalBest(board[0]?.score || newScore)
-        recordGame({ difficulty, correctCount: newCorrect, totalQuestions: currentIndex + 1, score: newScore })
+      // 3. Question Advancement
+      const isLastQuestion = currentIndex + 1 >= totalQuestions
+      if (isLastQuestion) {
+        handleEndGame(score + points, isCorrect ? correctCount + 1 : correctCount, totalQuestions)
+      } else {
+        setCurrentIndex(prev => prev + 1)
       }
-      playGameOver()
-      setGamePhase('finished')
-      return
-    }
 
-    if (currentIndex + 1 < totalQuestions) {
-      setCurrentIndex(currentIndex + 1)
+    } catch (err) {
+      console.error("handleAnswer ERROR:", err)
+    }
+  }, [config, streak, score, correctCount, currentIndex, totalQuestions, difficulty, currentPlayer, livesLeft])
+
+  const handleEndGame = (finalScore, finalCorrect, questionsCount) => {
+    if (difficulty !== 'Casual' && difficulty !== 'Secret') {
+      const board = saveGameScore(finalScore, difficulty, finalCorrect, questionsCount)
+      setPersonalBest(board[0]?.score || finalScore)
+      recordGame({ difficulty, correctCount: finalCorrect, totalQuestions: questionsCount, score: finalScore })
+    }
+    if (livesLeft === 0 || config?.gameOverOnWrong) {
+       setLegendGameOver(true)
+       playGameOver()
     } else {
-      if (difficulty !== 'Casual' && difficulty !== 'Secret') {
-        const board = saveGameScore(newScore, difficulty, newCorrect, totalQuestions)
-        setPersonalBest(board[0]?.score || newScore)
-        recordGame({ difficulty, correctCount: newCorrect, totalQuestions, score: newScore })
-      }
-      playComplete()
-      setGamePhase('finished')
+       playComplete()
     }
-  }, [config, streak, score, correctCount, currentIndex, totalQuestions, difficulty, livesLeft])
+    setGamePhase('finished')
+  }
 
   const handleRestart = () => {
     setPersonalBest(getPersonalBest())

@@ -31,13 +31,19 @@ export default function MultipleChoice({ options, correctAnswer, correctLogo, on
                 setAnswered(true)
                 setSelected(null)
                 playWrong()
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     onAnswer(false, 0)
                 }, 2500)
+                advanceRef.current = { isCorrect: false, remainingTime: 0, timeout }
             }
         }, 50)
 
-        return () => clearInterval(timerRef.current)
+        return () => {
+            clearInterval(timerRef.current)
+            if (advanceRef.current?.timeout) {
+                clearTimeout(advanceRef.current.timeout)
+            }
+        }
     }, [timerDuration, onAnswer])
 
     // Tick sound when timer enters danger zone
@@ -94,7 +100,9 @@ export default function MultipleChoice({ options, correctAnswer, correctLogo, on
     }, [answered, correctAnswer, onAnswer, timeLeft])
 
     const handleSkip = useCallback(() => {
-        if (!advanceRef.current) return
+        if (!advanceRef.current) {
+            return
+        }
         const { isCorrect, remainingTime, timeout } = advanceRef.current
         clearTimeout(timeout)
         advanceRef.current = null
