@@ -25,9 +25,9 @@ export default function PlayerCard({ player, blindMode, lang }) {
     }`}>
       {/* Card Header: Difficulty & Image */}
       <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-slate-900 mb-4 border border-white/5">
-        {imageUrl ? (
+        {photoUrl ? (
           <img
-            src={imageUrl}
+            src={photoUrl}
             alt={playerName}
             className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
           />
